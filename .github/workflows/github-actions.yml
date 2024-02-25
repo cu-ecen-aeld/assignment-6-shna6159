@@ -20,7 +20,31 @@ jobs:
         runs-on: self-hosted
         steps:
           - uses: actions/checkout@v2
+            with:
+              clean: false
           - name: Checkout submodules
+          - uses: webfactory/ssh-agent@v0.5.4
+            with:
+                 ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          - name: Run build
+            timeout-minutes: 600
+            run: |
+               docker run --rm \
+                 -v $SSH_AUTH_SOCK:/ssh-agent -e SSH_AUTH_SOCK=/ssh-agent \
+                 -e GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" \
+                 -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} \
             run : git submodule update --init --recursive
+                 --workdir=${GITHUB_WORKSPACE} \
+                 ./build.sh
+          - name: Cleanup
+            if: always()
+            run: |
+              ssh-add -D
           - name: Run full test
+            timeout-minutes: 15
+            run: |
+               docker run --rm \
+                 -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} \
+                 cuaesd/aesd-autotest:assignment6-yocto \
+                 --workdir=${GITHUB_WORKSPACE} \
             run: ./full-test.sh
