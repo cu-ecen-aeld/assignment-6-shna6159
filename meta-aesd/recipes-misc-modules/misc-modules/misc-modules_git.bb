@@ -11,7 +11,7 @@
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://../LICENSE;md5=f098732a73b5f6f3430472f5b094ffdb"
 
-SRC_URI = "git://git@github.com/cu-ecen-aeld/assignment-7-shna6159.git;protocol=ssh;branch=main \
+SRC_URI = "git://git@github.com/cu-ecen-aeld/assignment-7-spencermanning.git;protocol=ssh;branch=master \
 			file://misc-modules_init \
 			"
 
