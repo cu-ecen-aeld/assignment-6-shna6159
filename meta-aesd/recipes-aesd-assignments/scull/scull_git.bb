@@ -11,10 +11,7 @@
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
-SRC_URI = "git://github.com/cu-ecen-aeld/assignment-7-shna6159.git;protocol=https;branch=main \
-           file://0001-limit-modules-build-to-scull-and-misc-modules.patch \
-           file://S97scullmodule \
-           "
+SRC_URI = "git://github.com/cu-ecen-aeld/assignment-7-shna6159.git;protocol=https;branch=main"
 
 # Modify these as desired
 PV = "1.0+git${SRCPV}"
