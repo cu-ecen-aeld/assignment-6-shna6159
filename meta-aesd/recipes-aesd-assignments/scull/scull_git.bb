@@ -11,14 +11,14 @@
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
-SRC_URI = "git://github.com/cu-ecen-aeld/assignment-7-d4d0o.git;protocol=https;branch=main \
+SRC_URI = "git://github.com/cu-ecen-aeld/assignment-7-shna6159.git;protocol=https;branch=main \
            file://0001-limit-modules-build-to-scull-and-misc-modules.patch \
            file://S97scullmodule \
            "
 
 # Modify these as desired
 PV = "1.0+git${SRCPV}"
-SRCREV = "48f26b9c92bddfd4c87e1f2863c5114eb459e068"
+SRCREV = "1cc995ca86e9ff59212756f16483528dd77438fc"
 
 S = "${WORKDIR}/git"
 
