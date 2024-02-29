@@ -1,0 +1,18 @@
+#! /bin/sh
+
+modpath=/lib/modules/$(uname -r)/extra
+
+case "$1" in
+	start)
+		echo "Load aesdchar"
+		${modpath}/aesdchar_load
+		;;
+	stop)
+		echo "Unload aesdchar"
+		${modpath}/aesdchar_unload
+		;;
+	*)
+		echo "Usage: $0 {start|stop}"
+		exit 1
+esac
+exit 0

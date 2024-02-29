@@ -8,52 +8,48 @@
 # The following license files were not able to be identified and are
 # represented as "Unknown" below, you will need to check them yourself:
 #   LICENSE
-LICENSE = "CLOSED"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=f098732a73b5f6f3430472f5b094ffdb"
+LICENSE = "MIT"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
-SRC_URI = "git://git@github.com/cu-ecen-aeld/assignment-7-shna6159.git;protocol=ssh;branch=main \
-			file://misc-modules_init \
-			"
+SRC_URI = "git://github.com/cu-ecen-aeld/assignment-7-d4d0o.git;protocol=https;branch=main \
+           file://0001-limit-modules-build-to-scull-and-misc-modules.patch \
+           file://S97scullmodule \
+           "
 
 # Modify these as desired
 PV = "1.0+git${SRCPV}"
-SRCREV = "1cc995ca86e9ff59212756f16483528dd77438fc"
+SRCREV = "48f26b9c92bddfd4c87e1f2863c5114eb459e068"
 
-S = "${WORKDIR}/git/misc-modules"
+S = "${WORKDIR}/git"
 
 inherit module
 
-EXTRA_OEMAKE:append:task-install = " -C ${STAGING_KERNEL_DIR} M=${S}/misc-modules"
+EXTRA_OEMAKE:append:task-install = " -C ${STAGING_KERNEL_DIR} M=${S}/scull"
 EXTRA_OEMAKE += "KERNELDIR=${STAGING_KERNEL_DIR}"
 
-inherit update-rc.d
-INITSCRIPT_PACKAGES = "${PN}"
-INITSCRIPT_NAME:${PN} = "misc-modules_init"
-
-FILES:${PN} += "${sysconfdir}/*"
-
-do_configure () {
-	:
-}
-
-do_compile () {
-	oe_runmake
-}
-
-KERNEL_VERSION = "5.15.124-yocto-standard"
-
 do_install () {
-	# TODO: Install your binaries/scripts here.
+	# Install your binaries/scripts here.
 	# Be sure to install the target directory with install -d first
 	# Yocto variables ${D} and ${S} are useful here, which you can read about at 
 	# https://docs.yoctoproject.org/ref-manual/variables.html?highlight=workdir#term-D
 	# and
 	# https://docs.yoctoproject.org/ref-manual/variables.html?highlight=workdir#term-S
 	# See example at https://github.com/cu-ecen-aeld/ecen5013-yocto/blob/ecen5013-hello-world/meta-ecen5013/recipes-ecen5013/ecen5013-hello-world/ecen5013-hello-world_git.bb
-
+	
+	install -d ${D}${base_libdir}/modules/${KERNEL_VERSION}/extra
+	install -m 755 ${S}/scull/scull.ko ${D}${base_libdir}/modules/${KERNEL_VERSION}/extra/scull.ko
+	
 	install -d ${D}${sysconfdir}/init.d
-    install -d ${D}${base_libdir}/modules/${KERNEL_VERSION}/
-	install -m 0755 ${WORKDIR}/misc-modules_init ${D}${sysconfdir}/init.d
-    install -m 0755 ${S}/hello.ko ${D}${base_libdir}/modules/${KERNEL_VERSION}/
-    install -m 0755 ${S}/faulty.ko ${D}${base_libdir}/modules/${KERNEL_VERSION}/
+	install -m 0755 ${WORKDIR}/S97scullmodule ${D}${sysconfdir}/init.d
 }
+
+FILES_${PN} += "${base_libdir}/modules/${KERNEL_VERSION}/extra/scull.ko"
+
+FILES:${PN} += "${sysconfdir}/init.d/S97scullmodule"
+
+inherit update-rc.d
+INITSCRIPT_PACKAGES = "${PN}"
+INITSCRIPT_NAME:${PN} = "S97scullmodule"
+
+
+

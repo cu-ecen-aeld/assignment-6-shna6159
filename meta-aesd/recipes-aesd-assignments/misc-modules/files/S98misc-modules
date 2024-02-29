@@ -1,0 +1,50 @@
+#! /bin/sh
+
+modpath=/lib/modules/$(uname -r)/extra
+mode="664"
+group="staff"
+
+device_dynamic_assignation()
+{
+	module=$1
+	device=$2
+	minor=$3
+
+	major=$(awk "\$2==\"$module\" {print \$1}" /proc/devices)
+
+	if [ ! -z ${major} ]; then
+		echo "Remove any existing /dev node for /dev/${device}"
+		rm -f /dev/${device}
+		echo "Add a node for our device at /dev/${device} using mknod"
+		mknod /dev/${device} c $major $minor
+		echo "Change group owner to ${group}"
+		chgrp $group /dev/${device}
+		echo "Change access mode to ${mode}"
+		chmod $mode  /dev/${device}
+	else
+		echo "No device found in /proc/devices for driver ${module} (this driver may not allocate a device)"
+	fi
+}
+
+case "$1" in
+	start)
+		echo "Load modules"
+		cd $modpath
+
+		insmod ./hello.ko || exit 1
+
+		insmod ./faulty.ko || exit 1
+		;;
+	stop)
+		echo "Unload modules"
+		rmmod hello || exit 1
+		rm -f /dev/hello
+
+		rmmod faulty || exit 1
+		rm -f /dev/faulty
+		;;
+	*)
+		echo "Usage: $0 {start|stop}"
+		exit 1
+esac
+exit 0

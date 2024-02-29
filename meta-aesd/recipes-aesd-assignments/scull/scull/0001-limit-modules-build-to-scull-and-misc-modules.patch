@@ -1,0 +1,23 @@
+From 24a69986b92695fe4704d4c7f2f2ef3b105590c1 Mon Sep 17 00:00:00 2001
+From: David Peter <peteypeter@posteo.net>
+Date: Thu, 3 Aug 2023 14:43:24 -0400
+Subject: [PATCH] limit modules build to scull and misc-modules
+
+---
+ Makefile | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 7b08c49..c4f2e2e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,8 +1,5 @@
+ 
+-SUBDIRS =  misc-progs misc-modules \
+-           skull scull scullc scullp lddbus sculld scullv shortprint simple tty \
+-	   pci usb\
+-	   sbull snull short
++SUBDIRS =  misc-modules scull
+ 
+ all: subdirs
+ 
