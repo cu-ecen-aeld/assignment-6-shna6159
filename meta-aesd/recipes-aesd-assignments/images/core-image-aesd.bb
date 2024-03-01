@@ -1,4 +1,5 @@
 inherit core-image
+CORE_IMAGE_EXTRA_INSTALL += "libgcc"
 CORE_IMAGE_EXTRA_INSTALL += "misc-modules"
 CORE_IMAGE_EXTRA_INSTALL += "scull"
 CORE_IMAGE_EXTRA_INSTALL += "aesd-assignments"
